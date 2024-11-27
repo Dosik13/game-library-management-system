@@ -7,9 +7,9 @@ import (
 )
 
 type Config struct {
-	DBUri  string `json:"db_uri"`
-	DBName string `json:"db_name"`
-	Port   string `json:"port"`
+	DatabaseURI string `json:"db_uri"`
+	DBName      string `json:"db_name"`
+	Port        string `json:"port"`
 }
 
 func Load() (*Config, error) {
@@ -17,7 +17,7 @@ func Load() (*Config, error) {
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
-	DBUri := os.Getenv("DBUri")
+	DatabaseURI := os.Getenv("DatabaseURI")
 	DBName := os.Getenv("DBName")
 	portStr := os.Getenv("PORT")
 	if portStr == "" {
@@ -25,8 +25,8 @@ func Load() (*Config, error) {
 	}
 
 	return &Config{
-		DBUri:  DBUri,
-		DBName: DBName,
-		Port:   portStr,
+		DatabaseURI: DatabaseURI,
+		DBName:      DBName,
+		Port:        portStr,
 	}, nil
 }
