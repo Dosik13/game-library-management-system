@@ -15,7 +15,7 @@ type DeveloperService struct {
 
 // NewDeveloperService creates a new DeveloperService
 // It returns a pointer to a DeveloperService and an error
-func NewDeveloperService(developerRepository _interface.DeveloperRepositorer, gameRepository _interface.GameRepositorer, logger *zap.Logger) (*DeveloperService, error) {
+func NewDeveloperService(developerRepository _interface.DeveloperRepositorer, gameRepository _interface.GameRepositorer, logger *zap.Logger) (_interface.DeveloperServicer, error) {
 	return &DeveloperService{
 		developerRepository: developerRepository,
 		gameRepository:      gameRepository,

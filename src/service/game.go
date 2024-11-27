@@ -14,7 +14,7 @@ type GameService struct {
 
 // NewGameService creates a new GameService
 // It returns a pointer to a GameService and an error
-func NewGameService(gameRepository _interface.GameRepositorer, logger *zap.Logger) (*GameService, error) {
+func NewGameService(gameRepository _interface.GameRepositorer, logger *zap.Logger) (_interface.GameServicer, error) {
 	return &GameService{
 		gameRepository: gameRepository,
 		logger:         logger,
@@ -71,12 +71,22 @@ func (s *GameService) DeleteGame(ctx context.Context, id string) error {
 	return nil
 }
 
-// FindGameByDeveloper finds games by developer
-func (s *GameService) FindGameByDeveloper(ctx context.Context, developer string) ([]model.Game, error) {
+// FindGamesByDeveloper finds games by developer
+func (s *GameService) FindGamesByDeveloper(ctx context.Context, developer string) ([]model.Game, error) {
 	games, err := s.gameRepository.FindGamesByDeveloper(ctx, developer)
 	if err != nil {
 		s.logger.Error("Error finding games by developer", zap.String("developer", developer), zap.Error(err))
 		return nil, err
 	}
 	return games, nil
+}
+
+// DeleteManyGamesByDeveloper deletes many games by developer
+func (s *GameService) DeleteManyGamesByDeveloper(ctx context.Context, developer string) error {
+	err := s.gameRepository.DeleteManyGamesByDeveloper(ctx, developer)
+	if err != nil {
+		s.logger.Error("Error deleting games by developer", zap.String("developer", developer), zap.Error(err))
+		return err
+	}
+	return nil
 }

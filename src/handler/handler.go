@@ -2,8 +2,8 @@ package handler
 
 import (
 	"encoding/json"
+	_interface "game-library-management-system/src/interface"
 	"game-library-management-system/src/model"
-	"game-library-management-system/src/service"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -15,12 +15,12 @@ type Endpoint struct {
 }
 
 type Handler struct {
-	developerService *service.DeveloperService
-	gameService      *service.GameService
+	developerService _interface.DeveloperRepositorer
+	gameService      _interface.GameServicer
 }
 
 // NewHandler creates a new Handler instance.
-func NewHandler(developerService *service.DeveloperService, gameService *service.GameService) *Handler {
+func NewHandler(developerService _interface.DeveloperRepositorer, gameService _interface.GameServicer) *Handler {
 	return &Handler{
 		developerService: developerService,
 		gameService:      gameService,
@@ -198,7 +198,7 @@ func (h *Handler) FindGamesByDeveloper(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	games, err := h.gameService.FindGameByDeveloper(ctx, id)
+	games, err := h.gameService.FindGamesByDeveloper(ctx, id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
