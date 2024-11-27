@@ -49,7 +49,11 @@ For Developers:
 
 # Steps to Set up the Project
 
-Follow these steps to get your project running using Docker Compose.
+## Requirments
+
+To set up the project you need **Docker** and **Docker Compose** installed.
+
+## Follow these steps to get your project running using Docker Compose.
 
 ## 1. Clone the Project
 
@@ -59,12 +63,9 @@ Clone the project repository to your local machine:
 git clone https://github.com/Dosik13/game-library-management-system.git
 ```
 
-## 2. Make sure that Docker and Docker Compose are installed
+## 2. Set up the .env file
 
-```bash
-docker --version
-docker-compose --version
-```
+Set up your .env file (There is a .env.example file that shows the information needed)
 
 ## 3. Build the Docker Images
 
@@ -75,5 +76,5 @@ docker-compose build
 ## 4. Start the Containers
 
 ```bash
-docker-compose up
+docker compose up --build -d
 ```

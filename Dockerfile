@@ -24,6 +24,7 @@ COPY --from=builder /app/cmd/main .
 COPY --from=builder /app/.env .env
 
 # Expose the application port
+# 8080 is the default port for the application
 EXPOSE 8080
 
 # Run the application
