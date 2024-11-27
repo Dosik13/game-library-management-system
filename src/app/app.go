@@ -16,6 +16,9 @@ type App struct {
 	logger *zap.Logger
 }
 
+// NewApp initializes a new App instance.
+// It loads the configuration, initializes the logger, and sets up the server.
+// Returns the initialized App instance or an error
 func NewApp() (*App, error) {
 	config, err := configs.Load()
 	if err != nil {
@@ -34,6 +37,8 @@ func NewApp() (*App, error) {
 	}, nil
 }
 
+// createDeveloperRepository  creates a new DeveloperRepository instance.
+// Returns the DeveloperRepositorer interface or an error if the repository cannot be created.
 func (a *App) createDeveloperRepository() (_interface.DeveloperRepositorer, error) {
 	developerInterface, err := repository.NewDeveloperRepository(a.config.DBUri, a.config.DBName)
 	if err != nil {
@@ -42,6 +47,8 @@ func (a *App) createDeveloperRepository() (_interface.DeveloperRepositorer, erro
 	return developerInterface, nil
 }
 
+// createGameRepository  creates a new DeveloperRepository instance.
+// Returns the GameRepositorer interface or an error if the repository cannot be created.
 func (a *App) createGameRepository() (_interface.GameRepositorer, error) {
 	gameInterface, err := repository.NewGameRepository(a.config.DBUri, a.config.DBName)
 	if err != nil {
@@ -50,6 +57,9 @@ func (a *App) createGameRepository() (_interface.GameRepositorer, error) {
 	return gameInterface, err
 }
 
+// createDeveloperService creates a new DeveloperService instance.
+// Takes DeveloperRepositorer and GameRepositorer interfaces as parameters.
+// Returns the DeveloperService instance or an error if the service cannot be created.
 func (a *App) createDeveloperService(developerRepository _interface.DeveloperRepositorer, gameRepository _interface.GameRepositorer) (*service.DeveloperService, error) {
 	developerService, err := service.NewDeveloperService(developerRepository, gameRepository, a.logger)
 	if err != nil {
@@ -58,6 +68,9 @@ func (a *App) createDeveloperService(developerRepository _interface.DeveloperRep
 	return developerService, nil
 }
 
+// createGameService creates a new GameService instance.
+// Takes a GameRepositorer interface as a parameter.
+// Returns the GameService instance or an error if the service cannot be created.
 func (a *App) createGameService(gameRepository _interface.GameRepositorer) (*service.GameService, error) {
 	gameService, err := service.NewGameService(gameRepository, a.logger)
 	if err != nil {
@@ -66,6 +79,8 @@ func (a *App) createGameService(gameRepository _interface.GameRepositorer) (*ser
 	return gameService, nil
 }
 
+// setUpRoutes sets up the routes for the application using the provided handler.
+// Registers routes for developers and games.
 func (a *App) setUpRoutes(handler *handler.Handler) {
 	devsEndpoints := handler.RegisterRoutesForDevelopers()
 	for _, endpoint := range devsEndpoints {
@@ -78,6 +93,7 @@ func (a *App) setUpRoutes(handler *handler.Handler) {
 	}
 }
 
+// Run starts the application by initializing repositories, services, and setting up routes.
 func (a *App) Run() error {
 	developerRepository, err := a.createDeveloperRepository()
 	if err != nil {

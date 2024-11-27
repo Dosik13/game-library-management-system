@@ -15,6 +15,9 @@ type DeveloperRepository struct {
 	collection *mongo.Collection
 }
 
+// NewDeveloperRepository creates a new DeveloperRepository instance.
+// Connects to the MongoDB database using the provided URI and database name.
+// Returns the DeveloperRepositorer interface or an error if the connection fails.
 func NewDeveloperRepository(URI, dbName string) (_interface.DeveloperRepositorer, error) {
 	clientOptions := options.Client().ApplyURI(URI)
 	client, err := mongo.Connect(context.Background(), clientOptions)
@@ -29,6 +32,9 @@ func NewDeveloperRepository(URI, dbName string) (_interface.DeveloperRepositorer
 	}, nil
 }
 
+// GetAllDevelopers retrieves all developers from the collection.
+// Takes a context for managing request lifetime.
+// Returns a slice of Developer models or an error if the operation fails.
 func (r *DeveloperRepository) GetAllDevelopers(ctx context.Context) ([]model.Developer, error) {
 	var devs []model.Developer
 
@@ -44,6 +50,9 @@ func (r *DeveloperRepository) GetAllDevelopers(ctx context.Context) ([]model.Dev
 	return devs, nil
 }
 
+// GetDeveloperById retrieves a developer by their ID from the collection.
+// Takes a context for managing request lifetime and the developer ID as a string.
+// Returns a Developer model or an error if the operation fails.
 func (r *DeveloperRepository) GetDeveloperById(ctx context.Context, id string) (*model.Developer, error) {
 	var dev model.Developer
 	i, err := primitive.ObjectIDFromHex(id)
@@ -58,6 +67,9 @@ func (r *DeveloperRepository) GetDeveloperById(ctx context.Context, id string) (
 	return &dev, nil
 }
 
+// AddDeveloper inserts a new developer into the collection.
+// Takes a context for managing request lifetime and a Developer model.
+// Returns the inserted Developer model or an error if the operation fails.
 func (r *DeveloperRepository) AddDeveloper(ctx context.Context, developer model.Developer) (*model.Developer, error) {
 	developer.ID = primitive.NewObjectID()
 
@@ -69,6 +81,9 @@ func (r *DeveloperRepository) AddDeveloper(ctx context.Context, developer model.
 	return &developer, nil
 }
 
+// UpdateDeveloper updates an existing developer in the collection.
+// Takes a context for managing request lifetime, the developer ID as a string, and a Developer model.
+// Returns the updated Developer model or an error if the operation fails.
 func (r *DeveloperRepository) UpdateDeveloper(ctx context.Context, id string, developer model.Developer) (*model.Developer, error) {
 	i, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -85,6 +100,9 @@ func (r *DeveloperRepository) UpdateDeveloper(ctx context.Context, id string, de
 	return nil, nil
 }
 
+// DeleteDeveloper removes a developer from the collection by their ID.
+// Takes a context for managing request lifetime and the developer ID as a string.
+// Returns an error if the operation fails or if no document is found.
 func (r *DeveloperRepository) DeleteDeveloper(ctx context.Context, id string) error {
 	i, err := primitive.ObjectIDFromHex(id)
 	if err != nil {

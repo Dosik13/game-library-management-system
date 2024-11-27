@@ -15,6 +15,9 @@ type GameRepository struct {
 	collection *mongo.Collection
 }
 
+// NewGameRepository creates a new GameRepository instance.
+// Connects to the MongoDB database using the provided URI and database name.
+// Returns the GameRepositorer interface or an error if the connection fails.
 func NewGameRepository(URI, dbName string) (_interface.GameRepositorer, error) {
 	clientOptions := options.Client().ApplyURI(URI)
 	client, err := mongo.Connect(context.Background(), clientOptions)
@@ -29,6 +32,9 @@ func NewGameRepository(URI, dbName string) (_interface.GameRepositorer, error) {
 	}, nil
 }
 
+// GetAllGames retrieves all games from the collection.
+// Takes a context for managing request lifetime.
+// Returns a slice of Game models or an error if the operation fails.
 func (r *GameRepository) GetAllGames(ctx context.Context) ([]model.Game, error) {
 	var gs []model.Game
 
@@ -44,6 +50,9 @@ func (r *GameRepository) GetAllGames(ctx context.Context) ([]model.Game, error) 
 	return gs, nil
 }
 
+// GetGameById retrieves a game by its ID from the collection.
+// Takes a context for managing request lifetime and the game ID as a string.
+// Returns a Game model or an error if the operation fails.
 func (r *GameRepository) GetGameById(ctx context.Context, id string) (*model.Game, error) {
 	var game model.Game
 	i, err := primitive.ObjectIDFromHex(id)
@@ -58,6 +67,9 @@ func (r *GameRepository) GetGameById(ctx context.Context, id string) (*model.Gam
 	return &game, nil
 }
 
+// AddGame inserts a new game into the collection.
+// Takes a context for managing request lifetime and a Game model.
+// Returns the inserted Game model or an error if the operation fails.
 func (r *GameRepository) AddGame(ctx context.Context, game model.Game) (*model.Game, error) {
 	var developer model.Developer
 	err := r.collection.Database().Collection("developers").FindOne(ctx, bson.M{"_id": game.Developer.ID}).Decode(&developer)
@@ -76,6 +88,9 @@ func (r *GameRepository) AddGame(ctx context.Context, game model.Game) (*model.G
 	return &game, nil
 }
 
+// UpdateAvailability toggles the availability of a game in the collection.
+// Takes a context for managing request lifetime and the game ID as a string.
+// Returns the updated Game model or an error if the operation fails.
 func (r *GameRepository) UpdateAvailability(ctx context.Context, id string) (*model.Game, error) {
 	i, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -94,6 +109,9 @@ func (r *GameRepository) UpdateAvailability(ctx context.Context, id string) (*mo
 	return nil, nil
 }
 
+// DeleteGame removes a game from the collection.
+// Takes a context for managing request lifetime and the game ID as a string.
+// Returns an error if the operation fails.
 func (r *GameRepository) DeleteGame(ctx context.Context, id string) error {
 	i, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -106,6 +124,9 @@ func (r *GameRepository) DeleteGame(ctx context.Context, id string) error {
 	return nil
 }
 
+// FindGamesByDeveloper retrieves all games by a developer from the collection.
+// Takes a context for managing request lifetime and the developer name as a string.
+// Returns a slice of Game models or an error if the operation fails.
 func (r *GameRepository) FindGamesByDeveloper(ctx context.Context, developerName string) ([]model.Game, error) {
 	var developer model.Developer
 	err := r.collection.Database().Collection("developers").FindOne(ctx, bson.M{"name": developerName}).Decode(&developer)
@@ -130,6 +151,9 @@ func (r *GameRepository) FindGamesByDeveloper(ctx context.Context, developerName
 	return games, nil
 }
 
+// DeleteManyGamesByDeveloper removes all games by a developer from the collection.
+// Takes a context for managing request lifetime and the developer ID as a string.
+// Returns an error if the operation fails.
 func (r *GameRepository) DeleteManyGamesByDeveloper(ctx context.Context, developerId string) error {
 	id, err := primitive.ObjectIDFromHex(developerId)
 	if err != nil {

@@ -13,6 +13,8 @@ type DeveloperService struct {
 	logger              *zap.Logger
 }
 
+// NewDeveloperService creates a new DeveloperService
+// It returns a pointer to a DeveloperService and an error
 func NewDeveloperService(developerRepository _interface.DeveloperRepositorer, gameRepository _interface.GameRepositorer, logger *zap.Logger) (*DeveloperService, error) {
 	return &DeveloperService{
 		developerRepository: developerRepository,
@@ -21,6 +23,7 @@ func NewDeveloperService(developerRepository _interface.DeveloperRepositorer, ga
 	}, nil
 }
 
+// GetAllDevelopers gets all developers
 func (s *DeveloperService) GetAllDevelopers(ctx context.Context) ([]model.Developer, error) {
 	developers, err := s.developerRepository.GetAllDevelopers(ctx)
 	if err != nil {
@@ -30,6 +33,7 @@ func (s *DeveloperService) GetAllDevelopers(ctx context.Context) ([]model.Develo
 	return developers, nil
 }
 
+// GetDeveloperById gets a developer by ID
 func (s *DeveloperService) GetDeveloperById(ctx context.Context, id string) (*model.Developer, error) {
 	developer, err := s.developerRepository.GetDeveloperById(ctx, id)
 	if err != nil {
@@ -39,6 +43,7 @@ func (s *DeveloperService) GetDeveloperById(ctx context.Context, id string) (*mo
 	return developer, nil
 }
 
+// AddDeveloper adds a developer
 func (s *DeveloperService) AddDeveloper(ctx context.Context, developer model.Developer) (*model.Developer, error) {
 	newDeveloper, err := s.developerRepository.AddDeveloper(ctx, developer)
 	if err != nil {
@@ -48,6 +53,7 @@ func (s *DeveloperService) AddDeveloper(ctx context.Context, developer model.Dev
 	return newDeveloper, nil
 }
 
+// UpdateDeveloper updates a developer
 func (s *DeveloperService) UpdateDeveloper(ctx context.Context, id string, developer model.Developer) (*model.Developer, error) {
 	updatedDeveloper, err := s.developerRepository.UpdateDeveloper(ctx, id, developer)
 	if err != nil {
@@ -57,6 +63,7 @@ func (s *DeveloperService) UpdateDeveloper(ctx context.Context, id string, devel
 	return updatedDeveloper, nil
 }
 
+// DeleteDeveloper deletes a developer
 func (s *DeveloperService) DeleteDeveloper(ctx context.Context, id string) error {
 	err := s.gameRepository.DeleteManyGamesByDeveloper(ctx, id)
 	if err != nil {

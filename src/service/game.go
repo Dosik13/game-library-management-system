@@ -12,6 +12,8 @@ type GameService struct {
 	logger         *zap.Logger
 }
 
+// NewGameService creates a new GameService
+// It returns a pointer to a GameService and an error
 func NewGameService(gameRepository _interface.GameRepositorer, logger *zap.Logger) (*GameService, error) {
 	return &GameService{
 		gameRepository: gameRepository,
@@ -19,6 +21,7 @@ func NewGameService(gameRepository _interface.GameRepositorer, logger *zap.Logge
 	}, nil
 }
 
+// GetAllGames gets all games
 func (s *GameService) GetAllGames(ctx context.Context) ([]model.Game, error) {
 	games, err := s.gameRepository.GetAllGames(ctx)
 	if err != nil {
@@ -28,6 +31,7 @@ func (s *GameService) GetAllGames(ctx context.Context) ([]model.Game, error) {
 	return games, nil
 }
 
+// GetGameById gets a game by ID
 func (s *GameService) GetGameById(ctx context.Context, id string) (*model.Game, error) {
 	game, err := s.gameRepository.GetGameById(ctx, id)
 	if err != nil {
@@ -37,6 +41,7 @@ func (s *GameService) GetGameById(ctx context.Context, id string) (*model.Game, 
 	return game, nil
 }
 
+// AddGame adds a game
 func (s *GameService) AddGame(ctx context.Context, game model.Game) (*model.Game, error) {
 	newGame, err := s.gameRepository.AddGame(ctx, game)
 	if err != nil {
@@ -46,6 +51,7 @@ func (s *GameService) AddGame(ctx context.Context, game model.Game) (*model.Game
 	return newGame, nil
 }
 
+// UpdateAvailability updates a game's availability
 func (s *GameService) UpdateAvailability(ctx context.Context, id string) (*model.Game, error) {
 	updatedGame, err := s.gameRepository.UpdateAvailability(ctx, id)
 	if err != nil {
@@ -55,6 +61,7 @@ func (s *GameService) UpdateAvailability(ctx context.Context, id string) (*model
 	return updatedGame, nil
 }
 
+// DeleteGame deletes a game
 func (s *GameService) DeleteGame(ctx context.Context, id string) error {
 	err := s.gameRepository.DeleteGame(ctx, id)
 	if err != nil {
@@ -64,6 +71,7 @@ func (s *GameService) DeleteGame(ctx context.Context, id string) error {
 	return nil
 }
 
+// FindGameByDeveloper finds games by developer
 func (s *GameService) FindGameByDeveloper(ctx context.Context, developer string) ([]model.Game, error) {
 	games, err := s.gameRepository.FindGamesByDeveloper(ctx, developer)
 	if err != nil {

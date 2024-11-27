@@ -19,6 +19,7 @@ type Handler struct {
 	gameService      *service.GameService
 }
 
+// NewHandler creates a new Handler instance.
 func NewHandler(developerService *service.DeveloperService, gameService *service.GameService) *Handler {
 	return &Handler{
 		developerService: developerService,
@@ -26,6 +27,7 @@ func NewHandler(developerService *service.DeveloperService, gameService *service
 	}
 }
 
+// GetDevelopers handles the HTTP request to retrieve all developers.
 func (h *Handler) GetDevelopers(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -41,6 +43,7 @@ func (h *Handler) GetDevelopers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetDeveloper handles the HTTP request to retrieve a developer by ID.
 func (h *Handler) GetDeveloper(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -58,6 +61,7 @@ func (h *Handler) GetDeveloper(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CreateDeveloper handles the HTTP request to create a new developer.
 func (h *Handler) CreateDeveloper(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -74,6 +78,7 @@ func (h *Handler) CreateDeveloper(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// UpdateDeveloper handles the HTTP request to update an existing developer.
 func (h *Handler) UpdateDeveloper(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -93,6 +98,7 @@ func (h *Handler) UpdateDeveloper(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// DeleteDeveloper handles the HTTP request to delete a developer by ID.
 func (h *Handler) DeleteDeveloper(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -106,6 +112,7 @@ func (h *Handler) DeleteDeveloper(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// GetGames handles the HTTP request to retrieve all games.
 func (h *Handler) GetGames(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -121,6 +128,7 @@ func (h *Handler) GetGames(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetGame handles the HTTP request to retrieve a game by ID.
 func (h *Handler) GetGame(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -138,6 +146,7 @@ func (h *Handler) GetGame(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CreateGame handles the HTTP request to create a new game.
 func (h *Handler) CreateGame(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -154,6 +163,7 @@ func (h *Handler) CreateGame(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// UpdateGameAvailability handles the HTTP request to update a game's availability.
 func (h *Handler) UpdateGameAvailability(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -167,6 +177,7 @@ func (h *Handler) UpdateGameAvailability(w http.ResponseWriter, r *http.Request)
 	w.WriteHeader(http.StatusOK)
 }
 
+// DeleteGame handles the HTTP request to delete a game by ID.
 func (h *Handler) DeleteGame(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -180,6 +191,7 @@ func (h *Handler) DeleteGame(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// FindGamesByDeveloper handles the HTTP request to retrieve all games by a developer.
 func (h *Handler) FindGamesByDeveloper(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -198,6 +210,7 @@ func (h *Handler) FindGamesByDeveloper(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// RegisterRoutesForDevelopers registers the routes for developers.
 func (h *Handler) RegisterRoutesForDevelopers() []Endpoint {
 	return []Endpoint{
 		{Path: "/developers", Handler: h.GetDevelopers, Method: "GET"},
@@ -208,6 +221,7 @@ func (h *Handler) RegisterRoutesForDevelopers() []Endpoint {
 	}
 }
 
+// RegisterRoutesForGames registers the routes for games.
 func (h *Handler) RegisterRoutesForGames() []Endpoint {
 	return []Endpoint{
 		{Path: "/games", Handler: h.GetGames, Method: "GET"},
